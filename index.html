@@ -1,0 +1,152 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Memory game - Vasilije</title>
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+      }
+      h1 {
+         padding-left: 15%;
+      }
+      #main {
+          width: 50%;
+          //width: 820px;
+          float: left;
+      }
+      img {
+          width: 166px;
+          margin: 2px auto auto 2px;
+           
+         // border-radius: 10px;
+          vertical-align: middle;
+      }
+      #start {
+          font-size: 23px;
+          float: right;
+          background: red;
+          width: 190px;
+          height: 150px;
+          margin: 200px;
+          padding: 60px 20px;
+          text-align: center;   
+         
+          box-sizing: border-box;
+          cursor: pointer;
+      }
+  </style>
+</head>
+
+<body>
+    <h1>Memory game</h1>
+    <div id="main">
+        
+        
+        
+    </div><!-- End of main -->
+    <div id="start">
+        New Game!
+    </div>
+  <script>
+        var main = document.getElementById("main");
+        var niz = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+        var niz2 = [];
+        var elements = [];
+        var slike = document.getElementsByTagName("img");
+        var brojac = [];
+        for(var i = 0; i < niz.length; i++) {
+            niz2.push(niz[i]);
+            niz2.push(niz[i]);
+            
+        }
+      niz2.sort(function() { /* Sortira niz */
+          return 0.5 - Math.random();
+          
+      });
+   
+      
+      document.getElementById("start").addEventListener("click",    function() {
+          window.location.href = "";
+      });
+  
+      
+     
+      
+        for(var i = 0; i < niz2.length; i++) {
+            
+                elements[i] = document.createElement("img");
+                elements[i].src = niz2[i] + ".png";
+                elements[i].setAttribute("data-id", niz2[i]);
+                elements[i].setAttribute("data-stanje", 0);
+                elements[i].setAttribute("data-gotovo", 0);
+                elements[i].setAttribute("data-slika", i+1);  /* Dodaje finalnu sliku na pozadinu */
+            
+                main.appendChild(elements[i]);
+               
+        }
+     
+     
+
+   elements.forEach(function(item) {
+       item.src = "default.png";
+   });
+      elements.forEach(function(item) {
+          item.addEventListener("click", function() {
+                     
+                        
+            if(this.getAttribute("data-gotovo") == 0) {   
+                      
+                      if(brojac.length !== 2) {
+
+                        this.src = this.getAttribute("data-id") + ".png"; 
+                        this.setAttribute("data-stanje", 1);
+                        brojac.push(this.getAttribute("data-id"));
+                          if(brojac[0] == brojac[1]) {
+                               document.querySelectorAll("img[data-id='"+ brojac[0] +"']").forEach(function(item) {
+                            //item.src = "gotovo.png"; 
+                              item.src = item.getAttribute("data-slika") + ".jpg";
+                            item.setAttribute("data-gotovo", 1);
+                            item.setAttribute("data-stanje", 0);
+                         });
+                          brojac.length = 0;
+                          }
+
+                      } else if ((brojac[0] !== brojac[1]) && (brojac.length == 2)) {
+                         document.querySelectorAll("img[data-stanje='1']").forEach(function(item) {
+                             //if(item.getAttribute("data-gotovo") == 0) { 
+                                 item.src = "default.png";
+                                 item.setAttribute("data-stanje", 0);
+                            // }
+                          });
+                           this.src = this.getAttribute("data-id") + ".png"; 
+                           this.setAttribute("data-stanje", 1);
+                           brojac.length = 0;
+                           brojac.push(this.getAttribute("data-id"));
+                           
+
+
+                      } else if((brojac[0] == brojac[1]) && (brojac.length == 2)) {
+                          document.querySelectorAll("img[data-id='"+ brojac[0] +"']").forEach(function(item) {
+                           
+                              item.src = item.getAttribute("data-slika") + ".jpg"; /* Dodaje finalnu sliku na pozadinu */
+                            item.setAttribute("data-gotovo", 1);
+                            item.setAttribute("data-stanje", 0);
+
+                         });
+                          brojac.length = 0;
+
+                      }
+          }
+        });
+      });
+       
+          
+     
+      
+  </script>
+</body>
+</html>
